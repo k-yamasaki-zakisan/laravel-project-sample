@@ -1,0 +1,267 @@
+@charset "utf-8";
+
+
+
+/* --------------------------------
+
+	* Default Style Sheet {
+
+		* last update 12.01.18
+		* author : ForefrontService;
+	
+	}
+	
+--------------------------------
+
+	* Contents
+	
+	1. Universal Selector + body
+	2. List Module
+	3. Tables Module
+	4. Image Module
+	5. Text Module
+	6. Form Module + Replaced Elemnt
+	7. clearFix (pkg) Module
+	
+--------------------------------- */
+
+
+
+
+
+/* ==========================================================================================================
+
+	 1. Universal Selector + body
+ 
+============================================================================================================*/
+
+
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td,address {
+	margin			: 0;
+	padding			: 0;
+	line-height		: 1.5;
+   	font-weight		: normal;
+	font-style		: normal;
+	font-size		: 100%;
+	list-style		: none;
+}
+
+html{
+	overflow-y		: scroll;
+	height			: 100%;
+	margin-bottom	: 1px;
+}
+
+html {
+	filter			: expression (document.execCommand("BackgroundImageCache",false,true));
+}
+
+body {
+	font			: 14px "メイリオ", "ヒラギノ角ゴ Pro W3", Arial, Helvetica, Osaka, "ＭＳ Ｐゴシック", sans-serif;
+	font-weight		: bold;
+	color			: #000;
+	overflow: hidden;
+}
+
+br {
+	letter-spacing	: normal;
+}
+
+hr {
+	height			: 1px;
+}
+
+dt {
+	display			: block;
+	width			: auto;
+}
+
+
+
+
+
+/* ==========================================================================================================
+
+	  2. List Module
+
+============================================================================================================*/
+
+ul {
+	list-style		: none;
+}
+
+
+
+
+
+/* ==========================================================================================================
+
+	  3. Tables Module
+
+============================================================================================================*/
+
+table {
+	border			: none;
+	border-collapse	: collapse;
+}
+
+td, th {
+	vertical-align	: top;
+}
+
+th {
+	text-align		: left ;
+}
+
+caption {
+	text-align		: left;
+}
+
+
+
+
+
+/* ==========================================================================================================
+
+	  4. Image Module
+
+============================================================================================================*/
+
+img {
+	vertical-align	: bottom;
+}
+
+a img {
+	border			: none;
+}
+
+a:hover img{
+	opacity			: 0.8;
+	filter			: alpha(opacity=80);
+}
+
+
+
+
+
+/* ==========================================================================================================
+
+	  5. Text Module
+
+============================================================================================================*/
+
+/*  anchor
+-----------------------------------*/
+a {
+	text-decoration	: none;
+	outline			: none;
+}
+
+a:link {
+
+}
+
+a:visited {
+
+}
+
+a:hover {
+
+}
+
+
+
+
+
+/* ==========================================================================================================
+
+  6. Form Module + Replaced Elemnt
+
+============================================================================================================*/
+
+textarea, 
+select, 
+option, 
+optgroup {
+	vertical-align	: middle;
+	background-color: #fff;
+	font			: 12px "メイリオ", "ヒラギノ角ゴ Pro W3", Arial, Helvetica, Osaka, "ＭＳ Ｐゴシック", sans-serif;
+}
+
+select {
+	min-width		: 2em;
+}
+
+option, 
+optgroup {
+	padding-right	: 0.4em;
+}
+
+fieldset {
+	border			: none;
+}
+
+legend {
+	display			: none;
+}
+
+
+/*  input & label & option mousePointer
+-----------------------------------*/
+label[for], 
+input[type="checkbox"], 
+input[type="radio"], 
+input[type="button"], 
+select, 
+option {
+	cursor	: pointer;
+}
+
+optgroup {
+	cursor	: default;
+}
+
+
+
+
+
+/* ==========================================================================================================
+
+	7. clearFix (pkg) Module
+
+============================================================================================================*/
+
+.clear{
+clear:both;
+}
+
+.clearfix:after {
+    content		: " ";
+    display		: block;
+    visibility	: hidden;
+    clear		: both;
+    height		: 0.1px;
+    font-size	: 0.1em;
+    line-height	: 0;
+}
+
+
+/* for IE7 */
+*:first-child+html .clearfix  {
+	min-height: 1%;
+	/*zoom	: 1;*/
+}
+
+/* for Mac IE */
+* html .clearfix {
+	display	: inline-table;
+}
+
+/* no Mac IE \*/
+* html .clearfix {
+	height	: 1%;
+}
+.clearfix {
+	display	: block;
+}
+/* */

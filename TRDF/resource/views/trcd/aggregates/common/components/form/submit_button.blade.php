@@ -1,0 +1,1 @@
+<button class="btn btn-primary" type="submit">{{ $label ?? '送信' }}</button>

@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Redirect;
+
+class Authenticate extends Middleware
+{
+    protected $user_route = 'login';
+    protected $superadmin_route = 'superadmin.login';
+
+    /**
+     * Get the path the user should be redirected to when they are not authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return string|null
+     */
+    protected function redirectTo($request)
+    {
+        //if (! $request->expectsJson()) {
+        //	return route('login');
+        //}
+        if (!$request->expectsJson()) {
+            if (Route::is('superadmin.*')) {
+                Redirect::route($this->superadmin_route)->send();
+                //return route($this->superadmin_route);
+            } else {
+                return route($this->user_route);
+            }
+        }
+    }
+}

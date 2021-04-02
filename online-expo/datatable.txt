@@ -1,0 +1,328 @@
+onlineexpodb=> \d expositions;
+
+            列             |               型               |                          修飾語                          
+---------------------------+--------------------------------+----------------------------------------------------------
+ id                        | integer                        | not null default nextval('expositions_id_seq'::regclass)
+ name                      | character varying(100)         | not null
+ start_date                | date                           | not null
+ exposition_days           | integer                        | not null
+ slug                      | character varying(100)         | not null
+ active_flag               | boolean                        | not null default true
+ can_pre_registration_flag | boolean                        | not null default true
+ main_visual_path          | character varying(255)         | 
+ map_path                  | character varying(255)         | 
+ satori_tag                | character varying(255)         | not null
+ deleted_at                | timestamp(0) without time zone | 
+ csv_import_code           | character varying(100)         | 
+ created_at                | timestamp(0) without time zone | 
+ updated_at                | timestamp(0) without time zone | 
+インデックス:
+    "expositions_pkey" PRIMARY KEY, btree (id)
+    "expositions_slug_unique" UNIQUE CONSTRAINT, btree (slug)
+
+
+onlineexpodb=> \d superadmins;
+                                         テーブル "public.superadmins"
+        列         |               型               |                          修飾語
+-------------------+--------------------------------+----------------------------------------------------------
+ id                | bigint                         | not null default nextval('superadmins_id_seq'::regclass)
+ name              | character varying(255)         | not null
+ email             | character varying(255)         | not null
+ email_verified_at | timestamp(0) without time zone |
+ password          | character varying(255)         | not null
+ user_level        | integer                        | not null default 1
+ remember_token    | character varying(100)         |
+ created_at        | timestamp(0) without time zone |
+ updated_at        | timestamp(0) without time zone |
+インデックス:
+    "superadmins_pkey" PRIMARY KEY, btree (id)
+    "superadmins_email_unique" UNIQUE CONSTRAINT, btree (email)
+
+
+onlineexpodb=> \d exhibitor_images;
+                                      テーブル "public.exhibitor_images"
+      列      |               型               |                            修飾語
+
+--------------+--------------------------------+-------------------------------------------------------------
+--
+ id           | integer                        | not null default nextval('exhibitor_images_id_seq'::regclass
+)
+ exhibitor_id | integer                        | not null
+ image_path   | character varying(255)         | not null
+ sort_index   | integer                        | not null
+ created_at   | timestamp(0) without time zone |
+ updated_at   | timestamp(0) without time zone |
+インデックス:
+    "exhibitor_images_pkey" PRIMARY KEY, btree (id)
+
+
+onlineexpodb=> \d exhibitors;
+                                         テーブル "public.exhibitors"
+         列         |               型               |                         修飾語
+
+--------------------+--------------------------------+---------------------------------------------------------
+ id                 | integer                        | not null default nextval('exhibitors_id_seq'::regclass)
+ exhibition_id      | integer                        | not null
+ exhibition_zone_id | integer                        | not null
+ company_id         | integer                        | not null
+ name               | character varying(100)         | not null
+ name_kana          | character varying(100)         | not null
+ name_kana_for_sort | character varying(100)         | not null
+ address            | character varying(500)         | not null
+ tel                | character varying(20)          | not null
+ url                | character varying(300)         |
+ profile_text       | character varying(2000)        |
+ forgin_sync_key    | character varying(100)         | not null
+ created_at         | timestamp(0) without time zone |
+ updated_at         | timestamp(0) without time zone |
+インデックス:
+    "exhibitors_pkey" PRIMARY KEY, btree (id)
+
+
+onlineexpodb=> \d exhibitions;
+                                       テーブル "public.exhibitions"
+      列       |               型               |                          修飾語
+
+---------------+--------------------------------+----------------------------------------------------------
+ id            | integer                        | not null default nextval('exhibitions_id_seq'::regclass)
+ exposition_id | integer                        | not null
+ name          | character varying(200)         | not null
+ sort_index    | integer                        | not null
+ deleted_at    | timestamp(0) without time zone |
+ created_at    | timestamp(0) without time zone |
+ updated_at    | timestamp(0) without time zone |
+インデックス:
+    "exhibitions_pkey" PRIMARY KEY, btree (id)
+
+
+onlineexpodb=> \d exhibition_zones;
+                                       テーブル "public.exhibition_zones"
+      列       |               型               |                            修飾語
+
+---------------+--------------------------------+------------------------------------------------------------
+---
+ id            | integer                        | not null default nextval('exhibition_zones_id_seq'::regclass)
+ name          | character varying(100)         | not null
+ exhibition_id | integer                        | not null
+ sort_index    | integer                        | not null
+ created_at    | timestamp(0) without time zone |
+ updated_at    | timestamp(0) without time zone |
+インデックス:
+    "exhibition_zones_pkey" PRIMARY KEY, btree (id)
+
+
+onlineexpodb=> \d products;
+                                      テーブル "public.products"
+      列      |               型               |                        修飾語
+--------------+--------------------------------+-------------------------------------------------------
+ id           | integer                        | not null default nextval('products_id_seq'::regclass)
+ exhibitor_id | integer                        | not null
+ name         | character varying(200)         | not null
+ description  | character varying(1000)        | not null
+ view_flag    | boolean                        | not null default true
+ deleted_at   | timestamp(0) without time zone |
+ created_at   | timestamp(0) without time zone |
+ updated_at   | timestamp(0) without time zone |
+インデックス:
+    "products_pkey" PRIMARY KEY, btree (id)
+
+
+onlineexpodb=> \d product_images
+                                     テーブル "public.product_images"
+     列     |               型               |                           修飾語
+------------+--------------------------------+-------------------------------------------------------------
+ id         | integer                        | not null default nextval('product_images_id_seq'::regclass)
+ product_id | integer                        | not null
+ image_path | character varying(255)         | not null
+ sort_index | integer                        | not null
+ created_at | timestamp(0) without time zone |
+ updated_at | timestamp(0) without time zone |
+インデックス:
+    "product_images_pkey" PRIMARY KEY, btree (id)
+
+
+onlineexpodb=> \d product_attachment_files;
+                                     テーブル "public.product_attachment_files"
+     列     |               型               |                                修飾語
+------------+--------------------------------+-----------------------------------------------------------------------
+ id         | integer                        | not null default nextval('product_attachment_files_id_seq'::regclass)
+ product_id | integer                        | not null
+ file_path  | character varying(255)         | not null
+ sort_index | integer                        | not null
+ created_at | timestamp(0) without time zone |
+ updated_at | timestamp(0) without time zone |
+インデックス:
+    "product_attachment_files_pkey" PRIMARY KEY, btree (id)
+
+
+
+onlineexpodb=> \d seminar_types;
+                                     テーブル "public.seminar_types"
+     列     |               型               |                           修飾語
+------------+--------------------------------+------------------------------------------------------------
+ id         | integer                        | not null default nextval('seminar_types_id_seq'::regclass)
+ name       | character varying(100)         | not null
+ deleted_at | timestamp(0) without time zone |
+ created_at | timestamp(0) without time zone |
+ updated_at | timestamp(0) without time zone |
+インデックス:
+    "seminar_types_pkey" PRIMARY KEY, btree (id)
+
+
+onlineexpodb=> \d seminar_categories;
+                                        テーブル "public.seminar_categories"
+       列        |               型               |                             修飾語
+-----------------+--------------------------------+-----------------------------------------------------------------
+ id              | integer                        | not null default nextval('seminar_categories_id_seq'::regclass)
+ exposition_id   | integer                        | not null
+ exhibition_id   | integer                        |
+ seminar_type_id | integer                        | not null
+ name            | character varying(255)         | not null
+ active_flag     | boolean                        | not null default true
+ sort_index      | integer                        | not null
+ deleted_at      | timestamp(0) without time zone |
+ created_at      | timestamp(0) without time zone |
+ updated_at      | timestamp(0) without time zone |
+インデックス:
+    "seminar_categories_pkey" PRIMARY KEY, btree (id)
+
+
+onlineexpodb=> \d seminars;
+                                          テーブル "public.seminars"
+         列          |               型               |                        修飾語
+---------------------+--------------------------------+-------------------------------------------------------
+ id                  | integer                        | not null default nextval('seminars_id_seq'::regclass)
+ seminar_category_id | integer                        | not null
+ title               | character varying(255)         | not null
+ profile_text        | character varying(2000)        | not null
+ content             | character varying(2000)        | not null
+ profile_image_path  | character varying(255)         | not null
+ embed_code          | character varying(255)         |
+ active_flag         | boolean                        | not null default true
+ sort_index          | integer                        | not null
+ deleted_at          | timestamp(0) without time zone |
+ created_at          | timestamp(0) without time zone |
+ updated_at          | timestamp(0) without time zone |
+インデックス:
+    "seminars_pkey" PRIMARY KEY, btree (id)
+
+
+onlineexpodb=> SELECT * FROM seminar_types;
+ id |      name      | deleted_at | created_at | updated_at
+----+----------------+------------+------------+------------
+  1 | 展示会セミナー |            |            |
+  2 | 専門セミナー   |            |            |
+(2 行)
+
+
+onlineexpodb=> \d user_action_logs;
+                                          テーブル "public.user_action_logs"
+         列          |               型               |                            修飾語
+---------------------+--------------------------------+---------------------------------------------------------------
+ id                  | bigint                         | not null default nextval('user_action_logs_id_seq'::regclass)
+ user_id             | integer                        | not null
+ exposition_id       | integer                        | not null
+ action_type_id      | integer                        | not null
+ exhibitor_id        | integer                        |
+ exhibitor_video_id  | integer                        |
+ product_video_id    | integer                        |
+ product_file_id     | integer                        |
+ seminar_category_id | integer                        |
+ seminar_type_id     | integer                        |
+ seminar_id          | integer                        |
+ contact_id          | integer                        |
+ created_at          | timestamp(0) without time zone |
+ updated_at          | timestamp(0) without time zone |
+インデックス:
+    "user_action_logs_pkey" PRIMARY KEY, btree (id)
+
+
+onlineexpodb=> \d exhibitors;
+                                         テーブル "public.exhibitors"
+         列         |               型               |                         修飾語                          
+--------------------+--------------------------------+---------------------------------------------------------
+ id                 | integer                        | not null default nextval('exhibitors_id_seq'::regclass)
+ exhibition_id      | integer                        | not null
+ exhibition_zone_id | integer                        | not null
+ company_id         | integer                        | not null
+ name               | character varying(100)         | not null
+ name_kana          | character varying(100)         | not null
+ name_kana_for_sort | character varying(100)         | not null
+ zip_code1          | character varying(255)         | not null
+ zip_code2          | character varying(255)         | not null
+ prefecture_id      | integer                        | 
+ address            | character varying(255)         | 
+ building_name      | character varying(255)         | 
+ tel                | character varying(20)          | not null
+ url                | character varying(300)         | 
+ profile_text       | character varying(2000)        | 
+ forgin_sync_key    | character varying(100)         | 
+ logo_image_path    | character varying(255)         | 
+ map_width          | integer                        | 
+ map_height         | integer                        | 
+ map_left           | integer                        | 
+ map_top            | integer                        | 
+ frame_number       | integer                        | 
+ deleted_at         | timestamp(0) without time zone | 
+ created_at         | timestamp(0) without time zone | 
+ updated_at         | timestamp(0) without time zone | 
+インデックス:
+    "exhibitors_pkey" PRIMARY KEY, btree (id)
+
+
+onlineexpodb=> \d users;
+                                         テーブル "public.users"
+        列         |               型               |                       修飾語
+-------------------+--------------------------------+----------------------------------------------------
+ id                | integer                        | not null default nextval('users_id_seq'::regclass)
+ email             | character varying(255)         | not null
+ password          | character varying(255)         | not null
+ last_name         | character varying(255)         | not null
+ first_name        | character varying(255)         | not null
+ name              | character varying(255)         | not null
+ email_verified_at | timestamp(0) without time zone |
+ zip_code1         | character varying(255)         | not null
+ zip_code2         | character varying(255)         | not null
+ prefecture_id     | character varying(255)         |
+ address           | character varying(255)         |
+ building_name     | character varying(255)         |
+ remember_token    | character varying(100)         |
+ user_level        | integer                        | not null default 1
+ created_at        | timestamp(0) without time zone |
+ updated_at        | timestamp(0) without time zone |
+インデックス:
+    "users_pkey" PRIMARY KEY, btree (id)
+    "users_email_unique" UNIQUE CONSTRAINT, btree (email)
+
+
+onlineexpodb=> \d companies;
+                                        テーブル "public.companies"
+       列        |               型               |                         修飾語
+-----------------+--------------------------------+--------------------------------------------------------
+ id              | integer                        | not null default nextval('companies_id_seq'::regclass)
+ name            | character varying(100)         | not null
+ name_kana       | character varying(100)         | not null
+ zip_code1       | character varying(255)         | not null
+ zip_code2       | character varying(255)         | not null
+ prefecture_id   | character varying(255)         | not null
+ address         | character varying(255)         | not null
+ building_name   | character varying(255)         |
+ url             | character varying(300)         |
+ forgin_sync_key | character varying(100)         | not null
+ created_at      | timestamp(0) without time zone |
+ updated_at      | timestamp(0) without time zone |
+インデックス:
+    "companies_pkey" PRIMARY KEY, btree (id)
+
+
+onlineexpodb=> \d user_exhibitor;
+                                      テーブル "public.user_exhibitor"
+      列      |               型               |                           修飾語
+--------------+--------------------------------+-------------------------------------------------------------
+ id           | integer                        | not null default nextval('user_exhibitor_id_seq'::regclass)
+ user_id      | integer                        | not null
+ exhibitor_id | integer                        | not null
+ created_at   | timestamp(0) without time zone |
+ updated_at   | timestamp(0) without time zone |
+インデックス:
+    "user_exhibitor_pkey" PRIMARY KEY, btree (id)
