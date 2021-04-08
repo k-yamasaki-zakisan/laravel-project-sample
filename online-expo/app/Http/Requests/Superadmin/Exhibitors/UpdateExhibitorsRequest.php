@@ -4,7 +4,7 @@ namespace App\Http\Requests\Superadmin\Exhibitors;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreExhibitorsRequest extends FormRequest
+class UpdateExhibitorsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -56,10 +56,10 @@ class StoreExhibitorsRequest extends FormRequest
             'zip_code1' => ['bail', 'required', 'digits:3'],
             'zip_code2' => ['bail', 'required', 'digits:4'],
             'prefecture_id' => ['bail'],
-            'address' => ['bail', 'nullable', 'max:200'],
-            'building_name' => ['bail', 'nullable', 'max:200'],
+            'address' => ['bail', 'required', 'max:200'],
+            'building_name' => ['bail', 'max:200'],
             'tel' => ['bail', 'required', 'regex:/^[0-9]{2,4}-[0-9]{2,4}-[0-9]{3,4}$/'],
-            'url' => ['bail', 'nullable', 'url', 'max:250'],
+            'url' => ['bail', 'url', 'max:250'],
             'profile_text' => ['bail', 'nullable'],
             'plan_id' => ['bail', 'required', 'exists:plans,id'],
         ];
@@ -77,7 +77,6 @@ class StoreExhibitorsRequest extends FormRequest
             'url.url' => '正しい形式で入力して下さい',
         ];
     }
-
 
     public function withValidator($validator)
     {
@@ -102,7 +101,6 @@ class StoreExhibitorsRequest extends FormRequest
         });
     }
 
-
     public function validated()
     {
 
@@ -125,7 +123,6 @@ class StoreExhibitorsRequest extends FormRequest
             'url' => $validated['url'],
             'profile_text' => $validated['profile_text'],
             'plan_id' => $validated['plan_id'],
-            //          'forgin_sync_key' => NULL,
         ];
     }
 }

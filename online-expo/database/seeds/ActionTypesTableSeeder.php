@@ -17,7 +17,7 @@ class ActionTypesTableSeeder extends Seeder
 
         try {
             foreach ($seeds as $seed) {
-                $result = DB::table('action_types')->updateOrInsert(['id' => $seed['id']], $seed);
+                $result = DB::table('action_types')->updateOrInsert($seed);
 
                 if (empty($result)) throw new \Exception("Failed to save ActionTypes." . print_r($seed, true));
             }
@@ -32,24 +32,24 @@ class ActionTypesTableSeeder extends Seeder
     private function getSeeds()
     {
         return collect([
-            1  => ['id' =>  1, 'name' => 'EXPOログイン',           'code' => 100],
-            2  => ['id' =>  2, 'name' => '出展社モーダルOPEN',     'code' => 200],
-            3  => ['id' =>  3, 'name' => '出展社モーダルCLOSE',    'code' => 209],
-            4  => ['id' =>  4, 'name' => '出展社詳細ページOPEN',   'code' => 210],
-            5  => ['id' =>  5, 'name' => '出展社動画PLAY',         'code' => 211],
-            6  => ['id' =>  6, 'name' => '出展社動画STOP',         'code' => 212],
-            7  => ['id' =>  7, 'name' => '製品ページOPEN',         'code' => 220],
-            8  => ['id' =>  8, 'name' => '製品動画PLAY',           'code' => 221],
-            9  => ['id' =>  8, 'name' => '製品動画STOP',           'code' => 222],
-            10 => ['id' => 10, 'name' => '製品ファイルDOWNLOAD',   'code' => 223],
-            11 => ['id' => 11, 'name' => 'お問い合わせページOPEN', 'code' => 230],
-            12 => ['id' => 12, 'name' => 'お問い合わせSUBMIT',     'code' => 234],
-            13 => ['id' => 13, 'name' => 'チャットページOPEN',     'code' => 240],
-            14 => ['id' => 14, 'name' => 'チャットSUBMIT',         'code' => 244],
-            15 => ['id' => 15, 'name' => 'セミナーモーダルOPEN',   'code' => 300],
-            16 => ['id' => 16, 'name' => 'セミナーモーダルCLOSE',  'code' => 309],
-            17 => ['id' => 17, 'name' => 'セミナー動画PLAY',       'code' => 301],
-            18 => ['id' => 18, 'name' => 'セミナー動画STOP',       'code' => 302],
+            ['name' => 'EXPOログイン',           'code' => 100],
+            ['name' => '出展社モーダルOPEN',     'code' => 200],
+            ['name' => '出展社モーダルCLOSE',    'code' => 209],
+            ['name' => '出展社詳細ページOPEN',   'code' => 210],
+            ['name' => '出展社動画PLAY',         'code' => 211],
+            ['name' => '出展社動画STOP',         'code' => 212],
+            ['name' => '製品ページOPEN',         'code' => 220],
+            ['name' => '製品動画PLAY',           'code' => 221],
+            ['name' => '製品動画STOP',           'code' => 222],
+            ['name' => '製品ファイルDOWNLOAD',   'code' => 223],
+            ['name' => 'お問い合わせページOPEN', 'code' => 230],
+            ['name' => 'お問い合わせSUBMIT',     'code' => 234],
+            ['name' => 'チャットページOPEN',     'code' => 240],
+            ['name' => 'チャットSUBMIT',         'code' => 244],
+            ['name' => 'セミナーモーダルOPEN',   'code' => 300],
+            ['name' => 'セミナーモーダルCLOSE',  'code' => 309],
+            ['name' => 'セミナー動画PLAY',       'code' => 301],
+            ['name' => 'セミナー動画STOP',       'code' => 302],
         ]);
     }
 }

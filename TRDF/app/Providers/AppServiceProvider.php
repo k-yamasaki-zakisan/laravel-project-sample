@@ -15,9 +15,9 @@ class AppServiceProvider extends ServiceProvider
 	public function boot()
 	{
 		//
-		Validator::extend('date_multi_format', function($attribute, $value, $formats) {
+		Validator::extend('date_multi_format', function ($attribute, $value, $formats) {
 			// iterate through all formats
-			foreach($formats as $format) {
+			foreach ($formats as $format) {
 				// parse date with current format
 				$parsed = date_parse_from_format($format, $value);
 
@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
 			return false;
 		});
 		// 厳密なin比較
-		Validator::extend('strict_in', function($attribute, $value, $parameters) {
+		Validator::extend('strict_in', function ($attribute, $value, $parameters) {
 			return in_array($value, $parameters, true);
 		});
 	}
@@ -241,33 +241,33 @@ class AppServiceProvider extends ServiceProvider
 			\App\Infrastracture\Repositories\ApplicationVersionRepository::class
 		);
 		$this->app->bind(
-                        \App\Repositories\Trcd\ExpenseImageRepositoryInterface::class,
-                        \App\Infrastracture\Repositories\Trcd\ExpenseImageRepository::class
-                );
+			\App\Repositories\Trcd\ExpenseImageRepositoryInterface::class,
+			\App\Infrastracture\Repositories\Trcd\ExpenseImageRepository::class
+		);
 		$this->app->bind(
-                        \App\Repositories\Trcd\ExpenseSummaryRequestRepositoryInterface::class,
-                        \App\Infrastracture\Repositories\Trcd\ExpenseSummaryRequestRepository::class
-                );
+			\App\Repositories\Trcd\ExpenseSummaryRequestRepositoryInterface::class,
+			\App\Infrastracture\Repositories\Trcd\ExpenseSummaryRequestRepository::class
+		);
 		$this->app->bind(
-                        \App\Repositories\Trcd\ExpenseHeaderRequestRepositoryInterface::class,
-                        \App\Infrastracture\Repositories\Trcd\ExpenseHeaderRequestRepository::class
-                );
+			\App\Repositories\Trcd\ExpenseHeaderRequestRepositoryInterface::class,
+			\App\Infrastracture\Repositories\Trcd\ExpenseHeaderRequestRepository::class
+		);
 		$this->app->bind(
-                        \App\Repositories\Trcd\ExpenseSummaryRepositoryInterface::class,
-                        \App\Infrastracture\Repositories\Trcd\ExpenseSummaryRepository::class
-                );
-                $this->app->bind(
-                        \App\Repositories\Trcd\ExpenseHeaderRepositoryInterface::class,
-                        \App\Infrastracture\Repositories\Trcd\ExpenseHeaderRepository::class
-                );
+			\App\Repositories\Trcd\ExpenseSummaryRepositoryInterface::class,
+			\App\Infrastracture\Repositories\Trcd\ExpenseSummaryRepository::class
+		);
 		$this->app->bind(
-                        \App\Repositories\Trcd\AccountTitleRepositoryInterface::class,
-                        \App\Infrastracture\Repositories\Trcd\AccountTitleRepository::class
-                );
+			\App\Repositories\Trcd\ExpenseHeaderRepositoryInterface::class,
+			\App\Infrastracture\Repositories\Trcd\ExpenseHeaderRepository::class
+		);
 		$this->app->bind(
-                        \App\Repositories\Trcd\AccountTitleClientRepositoryInterface::class,
-                        \App\Infrastracture\Repositories\Trcd\AccountTitleClientRepository::class
-                );
+			\App\Repositories\Trcd\AccountTitleRepositoryInterface::class,
+			\App\Infrastracture\Repositories\Trcd\AccountTitleRepository::class
+		);
+		$this->app->bind(
+			\App\Repositories\Trcd\AccountTitleClientRepositoryInterface::class,
+			\App\Infrastracture\Repositories\Trcd\AccountTitleClientRepository::class
+		);
 		$this->app->bind(
 			\App\Repositories\MailDeliveryTaskRepositoryInterface::class,
 			\App\Infrastracture\Repositories\MailDeliveryTaskRepository::class
@@ -281,17 +281,17 @@ class AppServiceProvider extends ServiceProvider
 			\App\Infrastracture\Repositories\Trcd\ExpenseImagesDirectoryManipulationTaskRepository::class
 		);
 		$this->app->bind(
-    		\App\Repositories\Trcd\BalanceThresholdRepositoryInterface::class,
-    		\App\Infrastracture\Repositories\Trcd\BalanceThresholdRepository::class
+			\App\Repositories\Trcd\BalanceThresholdRepositoryInterface::class,
+			\App\Infrastracture\Repositories\Trcd\BalanceThresholdRepository::class
 		);
-        $this->app->bind(
-            \App\Repositories\Trcd\TrcdTerminalNotificationSettingRepositoryInterface::class,
-            \App\Infrastracture\Repositories\Trcd\TrcdTerminalNotificationSettingRepository::class
+		$this->app->bind(
+			\App\Repositories\Trcd\TrcdTerminalNotificationSettingRepositoryInterface::class,
+			\App\Infrastracture\Repositories\Trcd\TrcdTerminalNotificationSettingRepository::class
 		);
 
 		$this->app->bind(
-            \App\Repositories\Trcd\TrcdTerminalNotificationDestinationRepositoryInterface::class,
-            \App\Infrastracture\Repositories\Trcd\TrcdTerminalNotificationDestinationRepository::class
-        );
+			\App\Repositories\Trcd\TrcdTerminalNotificationDestinationRepositoryInterface::class,
+			\App\Infrastracture\Repositories\Trcd\TrcdTerminalNotificationDestinationRepository::class
+		);
 	}
 }
