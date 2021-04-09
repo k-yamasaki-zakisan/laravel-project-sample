@@ -14,11 +14,14 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ $exposition['name'] ?? config('app.name', 'online_expo') }}</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+
+    <!-- favicon -->
+    <link rel="icon" href="{{ asset('online_expo_favicon.ico') }}" id="favicon">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -135,7 +138,8 @@
 
             <nav>
                 @if( !empty($exposition['main_visual_path']) )
-                <h1 id="logo"><a href="/"><img src="{{ asset('storage/' . $exposition['main_visual_path']) }}"
+                <h1 id="logo"><a href="{{ route('visitor.home', $exposition['slug']) }}"><img
+                            src="{{ asset('storage/' . $exposition['main_visual_path']) }}"
                             style="height: 30px; width: auto;"></a></h1>
                 @endif
 
@@ -146,6 +150,10 @@
                         <li><a href="#onkensaku_link">50音検索</a></li>
                         <li class="menu_btn"><a>フリーワード検索</a></li>
                         <li><a href="#kouen_link">講演・セミナー</a></li>
+                        @if( $is_exhibitor_admin )
+                        <li><a href="{{ route('exhibitor_admin.exhibitors.edit', $exposition['slug']) }}"
+                                target="_blank" rel="noopener noreferrer">管理社ページ</a></li>
+                        @endif
                     </ul>
                     <div id="logout">
                         <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -174,7 +182,13 @@
                         <li><a href="#onkensaku_link">50音検索</a></li>
                         <li class="menu_btn"><a>フリーワード検索</a></li>
                         <li><a href="#kouen_link">講演・セミナー</a></li>
-                        <li><a href="">ログアウト</a></li>
+                        @if( $is_exhibitor_admin )
+                        <li><a href="{{ route('exhibitor_admin.exhibitors.edit', $exposition['slug']) }}"
+                                target="_blank" rel="noopener noreferrer">管理社ページ</a></li>
+                        @endif
+                        <li><a href="#"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">ログアウト</a>
+                        </li>
                     </ul>
                 </nav>
 
@@ -389,7 +403,8 @@ $("#tabledata").searcher({
     </script>
 
     <script>
-        $(function(){
+        //モーダル閉じログ収集
+$(function(){
   $(".iframe").colorbox({
     onClosed:function(){
       const triger = $(this);
