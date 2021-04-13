@@ -7,12 +7,15 @@ use App\Http\Controllers\Controller;
 // モデル
 use App\Exhibitor;
 use App\User;
+use App\Plan;
 
 // リクエスト
 use App\Http\Requests\Superadmin\Exhibitors\StoreExhibitorsRequest;
 use App\Http\Requests\Superadmin\Exhibitors\UpdateExhibitorsRequest;
 use App\Http\Requests\Superadmin\Exhibitors\SaveExhibitorUsersRequest;
 use Illuminate\Http\Request;
+// Traits
+use \App\Http\Controllers\Superadmin\Licenses\SelectExpotionTrait;
 
 use Illuminate\Support\Facades\Redirect;
 use DB;
@@ -20,6 +23,8 @@ use DB;
 
 class ExhibitorsController extends SuperadminBaseController
 {
+    use SelectExpotionTrait;
+
     /**
      * Display a listing of the resource.
      *
@@ -27,8 +32,7 @@ class ExhibitorsController extends SuperadminBaseController
      */
     public function index(Request $request)
     {
-
-        $expo_id = $this->checkSelectExpotionId($request);
+        $expo_id = $this->getSelectExpotionId($request);
 
         $exhibitors = Exhibitor::with(['exhibition_zone', 'exhibition', 'prefecture'])->orderBy('name_kana', 'ASC')->get()->toArray();
 
@@ -53,19 +57,32 @@ class ExhibitorsController extends SuperadminBaseController
      */
     public function create(Request $request)
     {
-        $expo_id = $this->checkSelectExpotionId($request);
+        $expo_id = $this->getSelectExpotionId($request);
 
-        $exhibitions = \App\Exhibition::where('exposition_id', $expo_id)->get()->toArray();
+        $exhibitions = \App\Exhibition::where('exposition_id', $expo_id)->get();
+
+        // 該当の展示会がない場合
+        if ($exhibitions->isEmpty()) {
+            return redirect()->route('superadmin.exhibitions.index')->with('flash_message', '展示会を登録して下さい');
+        }
+
         foreach ($exhibitions as $exhibition) {
             $exhibition_arr[] = $exhibition['id'];
         }
 
-        $exhibition_zones = \App\ExhibitionZone::whereIn('id', $exhibition_arr)->groupBy('id')->get()->toArray();
+        $exhibition_zones = \App\ExhibitionZone::whereIn('exhibition_id', $exhibition_arr)->get()->keyBy('id')->toArray();
 
         $prefectures = \App\Prefecture::get()->toArray();
         $companies = \App\Company::orderBy('name_kana', 'asc')->get()->toArray();
+        $plans = Plan::orderBy('id', 'asc')->get()->toArray();
 
-        return view('superadmin.exhibitors.create', ['prefectures' => $prefectures, 'exhibition_zones' => $exhibition_zones, 'companies' => $companies, 'exhibitions' => $exhibitions]);
+        return view('superadmin.exhibitors.create', [
+            'prefectures' => $prefectures,
+            'exhibition_zones' => $exhibition_zones,
+            'companies' => $companies,
+            'exhibitions' => $exhibitions,
+            'plans' => $plans
+        ]);
     }
 
     /**
@@ -116,17 +133,34 @@ class ExhibitorsController extends SuperadminBaseController
     {
         if (!empty($request->old('selecte_exposition_id'))) return redirect()->route('superadmin.exhibitors.index')->with('flash_message', '編集画面ではEXPOセレクタを選択しないで下さい');
 
-        $expo_id = $this->checkSelectExpotionId($request);
-
+        $expo_id = $this->getSelectExpotionId($request);
         $exhibitor = \App\Exhibitor::findOrFail($id);
 
-        $exhibitions = \App\Exhibition::where('id', $exhibitor['exhibition_id'])->get()->toArray();
-        $exhibition_zones = \App\ExhibitionZone::where('id', $exhibitor['exhibition_zone_id'])->get()->toArray();
+        $exhibitions = \App\Exhibition::where('exposition_id', $expo_id)->get();
+
+        // 該当の展示会がない場合
+        if ($exhibitions->isEmpty()) {
+            return redirect()->route('superadmin.exhibitions.index')->with('flash_message', '展示会を登録して下さい');
+        }
+
+        foreach ($exhibitions as $exhibition) {
+            $exhibition_arr[] = $exhibition['id'];
+        }
+
+        $exhibition_zones = \App\ExhibitionZone::whereIn('exhibition_id', $exhibition_arr)->get()->toArray();
 
         $prefectures = \App\Prefecture::get()->toArray();
         $companies = \App\Company::orderBy('name_kana', 'asc')->get()->toArray();
+        $plans = Plan::orderBy('id', 'asc')->get()->toArray();
 
-        return view('superadmin.exhibitors.edit', ['exhibitor' => $exhibitor, 'prefectures' => $prefectures, 'exhibition_zones' => $exhibition_zones, 'companies' => $companies, 'exhibitions' => $exhibitions]);
+        return view('superadmin.exhibitors.edit', [
+            'exhibitor' => $exhibitor,
+            'prefectures' => $prefectures,
+            'exhibition_zones' => $exhibition_zones,
+            'companies' => $companies,
+            'exhibitions' => $exhibitions,
+            'plans' => $plans
+        ]);
     }
 
     /**
@@ -138,7 +172,7 @@ class ExhibitorsController extends SuperadminBaseController
      */
     public function update(UpdateExhibitorsRequest $request, $id)
     {
-        $expo_id = $this->checkSelectExpotionId($request);
+        $expo_id = $this->getSelectExpotionId($request);
         $validated = $request->validated();
         $Exhibitor = \App\Exhibitor::findOrFail($id);
 
@@ -189,7 +223,7 @@ class ExhibitorsController extends SuperadminBaseController
 
     public function selectExhibitorUsers(Request $request, $exhibitor_id, $search_name = null, $search_email = null)
     {
-        $expo_id = $this->checkSelectExpotionId($request);
+        $expo_id = $this->getSelectExpotionId($request);
 
         if (!empty($request->search_name)) $search_name = $request->search_name;
         if (!empty($request->search_email)) $search_email = $request->search_email;
@@ -248,18 +282,5 @@ class ExhibitorsController extends SuperadminBaseController
             'search_email' => $request->search_email,
         ])
             ->with('flash_message', '解除が完了しました');
-    }
-
-    private function checkSelectExpotionId(Request $request)
-    {
-        try {
-            $expo_id = $request->session()->get('superadmin_expo_selector');
-
-            if (empty($expo_id)) throw new \RunTimeException("Exhibition = No select expotion");
-        } catch (\Exception $e) {
-            Redirect::route('superadmin.expositions.index')->with('flash_message', 'EXPOセレクタを選択ください')->send();
-        }
-
-        return (int) $expo_id;
     }
 }

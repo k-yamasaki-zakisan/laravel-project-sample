@@ -143,9 +143,9 @@
                       <select name="employment_status_id">
                         <option></option>
                         @foreach($employment_statuses as $employment_status_id => $employment_status_name)
-                        <option value="{{ $employment_status_id }}" @if( !empty( old('employment_status_id') ) ) @if(
-                          $employment_status_id==old('employment_status_id') ) selected @endif @else @if(
-                          $employment_status_id==$now_employment_status_id ) selected @endif @endif>
+                        <option value="{{ $employment_status_id }}" @if( !empty( old('employment_status_id') ) )
+                          @if($employment_status_id==old('employment_status_id') ) selected @endif @else
+                          @if($employment_status_id==$now_employment_status_id ) selected @endif @endif>
                           {{ $employment_status_name }}</option>
                         @endforeach
                       </select>
